@@ -15,7 +15,7 @@ remind the issue creator to provide a time estimate if it’s missing.
 
 ```script
 npm install --global smee-client
-smee -u <<Webhook Proxy URL>> -P /webhooks
+smee -P /webhooks -u <<Webhook Proxy URL>>
 ```
 
 ### Creating a Github application
@@ -33,7 +33,7 @@ smee -u <<Webhook Proxy URL>> -P /webhooks
     - Click on `Create GitHub App`
 
 Once the app is created, scroll down to `Private Keys` section and generate a private key   
-Go to https://github.com/settings/apps/issue-estimate-bot and install the app
+Go to https://github.com/settings/apps/<app-name>/installations and install the app
 
 ### Running the application
 
@@ -58,7 +58,7 @@ bundle exec rails credentials:edit --environment=development
 ```
 
 `github.app_id` = GH App ID   
-`github.private_key` = GH App private key   
+`github.private_key` = GH App private key (Downloaded when the private key was created)   
 `github.webhooks.secret` = Same Webhook secret used to create the GH app
 
 Example:
@@ -73,4 +73,9 @@ github:
     -----END RSA PRIVATE KEY-----
   webhooks:
     secret: super-secret
+```
+
+#### Starting the application
+```script
+rails s
 ```
