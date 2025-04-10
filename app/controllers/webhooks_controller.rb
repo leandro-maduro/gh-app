@@ -4,7 +4,7 @@ class WebhooksController < ApplicationController
   before_action :authenticate
 
   ACTIONS = {
-    'opened' => Issues::Opened
+    'opened' => Issues::OpenedService
   }.freeze
 
   def incoming
@@ -12,8 +12,10 @@ class WebhooksController < ApplicationController
     action = ACTIONS.fetch(event[:action])
 
     action.call(event)
+
+    head :ok
   rescue KeyError
-    Rails.logger.info("Skipping event #{request.headers['X-Github-Event']}.#{action_name}")
+    Rails.logger.info("Skipping unsupported event: #{request.headers['X-Github-Event']}.#{event[:action]}")
   end
 
   private

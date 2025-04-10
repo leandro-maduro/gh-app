@@ -19,7 +19,7 @@ RSpec.shared_examples 'leaves a comment' do
   end
 end
 
-RSpec.describe Issues::Opened do
+RSpec.describe Issues::OpenedService do
   describe '.call' do
     subject(:call) { described_class.call(event) }
 

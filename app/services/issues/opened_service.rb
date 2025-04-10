@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Issues
-  class Opened
+  class OpenedService
     ESTIMATION_REGEX = /Estimate:\s*\d+\s+day(s)?/i
     MESSAGE = '👋 Please add an estimate in the format `Estimate: X days` to this issue.'
 
