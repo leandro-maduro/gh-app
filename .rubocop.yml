@@ -8,3 +8,9 @@ AllCops:
     - "bin/*"
 Style/Documentation:
   Enabled: false
+
+RSpec/NestedGroups:
+  Enabled: false
+
+RSpec/MultipleMemoizedHelpers:
+  Enabled: false
