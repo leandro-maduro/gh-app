@@ -3,19 +3,14 @@
 class WebhooksController < ApplicationController
   before_action :authenticate
 
-  ACTIONS = {
-    'opened' => Issues::OpenedService
-  }.freeze
-
   def incoming
     event = JSON.parse(request.body.read, symbolize_names: true)
-    action = ACTIONS.fetch(event[:action])
 
-    action.call(event)
+    return head :ok if skip?(event)
+
+    ProcessEventsJob.perform_later(event)
 
     head :ok
-  rescue KeyError
-    Rails.logger.info("Skipping unsupported event: #{request.headers['X-Github-Event']}.#{event[:action]}")
   end
 
   private
@@ -26,5 +21,13 @@ class WebhooksController < ApplicationController
     SignatureVerifier.verify!(request.body.read, request.headers, signing_secret)
   rescue SignatureVerifier::InvalidSignatureError
     head(:unauthorized)
+  end
+
+  def skip?(event)
+    return false if ProcessEventsJob::ACTIONS.keys.include?(event[:action])
+
+    Rails.logger.info("Skipping unsupported event: #{request.headers['X-Github-Event']}.#{event[:action]}")
+
+    true
   end
 end

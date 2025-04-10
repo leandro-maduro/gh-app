@@ -75,7 +75,23 @@ github:
     secret: super-secret
 ```
 
+#### Starting DB
+```script
+docker compose up -d
+```
+
+#### Running migrations
+```script
+bin/rails db:create
+bin/rails db:migrate:queue
+```
+
 #### Starting the application
 ```script
 rails s
+```
+
+#### Starting jobs processor
+```script
+bin/jobs start
 ```

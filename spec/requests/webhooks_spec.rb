@@ -14,10 +14,7 @@ RSpec.describe 'Webhooks', type: :request do
     end
 
     context 'with a supported event' do
-      before do
-        allow(SignatureVerifier).to receive(:verify!).and_return(true)
-        allow(Issues::OpenedService).to receive(:new).and_return(issue_opened_service)
-      end
+      before { allow(SignatureVerifier).to receive(:verify!).and_return(true) }
 
       it 'processes event' do
         post(webhooks_path, headers:, params: params.to_json)
